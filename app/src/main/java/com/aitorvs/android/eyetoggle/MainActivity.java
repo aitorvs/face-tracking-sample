@@ -52,17 +52,28 @@ public class MainActivity extends AppCompatActivity {
         // check that the play services are installed
         PlayServicesUtil.isPlayServicesAvailable(this, 69);
 
+        // permission granted...?
         if (isCameraPermissionGranted()) {
+            // ...create the camera resource
             createCameraResources();
         } else {
+            // ...else request the camera permission
             requestCameraPermission();
         }
     }
 
+    /**
+     * Check camera permission
+     *
+     * @return <code>true</code> if granted
+     */
     private boolean isCameraPermissionGranted() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
+    /**
+     * Request the camera permission
+     */
     private void requestCameraPermission() {
         final String[] permissions = new String[]{Manifest.permission.CAMERA};
         ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERM);
@@ -96,7 +107,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // register the event bus
         EventBus.getDefault().register(this);
+
+        // start the camera feed
         if (mCameraSource != null && isCameraPermissionGranted()) {
             try {
                 //noinspection MissingPermission
@@ -112,9 +127,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        // unregister from the event bus
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+
+        // stop the camera source
         if (mCameraSource != null) {
             mCameraSource.stop();
         } else {
@@ -125,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        // release them all...
         if (mFaceDetector != null) {
             mFaceDetector.release();
         } else {
@@ -165,19 +186,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void createCameraResources() {
         Context context = getApplicationContext();
+
+        // create and setup the face detector
         mFaceDetector = new FaceDetector.Builder(context)
-                .setTrackingEnabled(true)
-                .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
-                .setMode(FaceDetector.ACCURATE_MODE)
+                .setTrackingEnabled(true) // enable face tracking
+                .setClassificationType(/* eyes open and smile */ FaceDetector.ALL_CLASSIFICATIONS)
+                .setMode(FaceDetector.FAST_MODE) // for one face this is OK
                 .build();
+
+        // now that we've got a detector, create a processor pipeline to receive the detection
+        // results
         mFaceDetector.setProcessor(new MultiProcessor.Builder<>(new FaceTrackerFactory()).build());
 
+        // operational...?
         if (!mFaceDetector.isOperational()) {
             Log.w(TAG, "createCameraResources: detector NOT operational");
         } else {
             Log.d(TAG, "createCameraResources: detector operational");
         }
 
+        // Create camera source that will capture video frames
+        // Use the front camera
         mCameraSource = new CameraSource.Builder(this, mFaceDetector)
                 .setRequestedPreviewSize(640, 480)
                 .setFacing(CameraSource.CAMERA_FACING_FRONT)
