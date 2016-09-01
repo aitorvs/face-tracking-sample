@@ -164,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLeftEyeClosed(LeftEyeClosedEvent e) {
-        if (!updating.getAndSet(true)) {
+        if (catchUpdatingLock()) {
             mSwitch.setChecked(false);
             mLight.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+            releaseUpdatingLock();
         }
-        updating.set(false);
     }
 
     @Subscribe
@@ -177,10 +177,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRightEyeClosed(RightEyeClosedEvent e) {
-        if (!updating.getAndSet(true)) {
+        if (catchUpdatingLock()) {
             mSwitch.setChecked(true);
             mLight.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+            releaseUpdatingLock();
         }
+    }
+
+    private boolean catchUpdatingLock() {
+        // set updating and return previous value
+        return !updating.getAndSet(true);
+    }
+    private void releaseUpdatingLock() {
         updating.set(false);
     }
 
