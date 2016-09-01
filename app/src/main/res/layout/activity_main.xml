@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context="com.aitorvs.android.eyetoggle.MainActivity">
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+    <View
+        android:id="@+id/light"
+        android:layout_gravity="center"
+        android:background="@color/green"
+        app:layout_aspectRatio="100%"
+        app:layout_widthPercent="75%" />
+
+</android.support.percent.PercentFrameLayout>
