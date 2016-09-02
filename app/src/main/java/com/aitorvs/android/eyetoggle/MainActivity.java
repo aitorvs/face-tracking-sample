@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLeftEyeClosed(LeftEyeClosedEvent e) {
-        if (catchUpdatingLock()) {
+        if (mSwitch.isChecked() && catchUpdatingLock()) {
             mSwitch.setChecked(false);
             mLight.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
             releaseUpdatingLock();
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRightEyeClosed(RightEyeClosedEvent e) {
-        if (catchUpdatingLock()) {
+        if (!mSwitch.isChecked() && catchUpdatingLock()) {
             mSwitch.setChecked(true);
             mLight.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
             releaseUpdatingLock();
