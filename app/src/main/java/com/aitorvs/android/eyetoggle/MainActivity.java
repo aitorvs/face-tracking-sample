@@ -15,9 +15,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.aitorvs.android.eyetoggle.event.LeftEyeClosedEvent;
-import com.aitorvs.android.eyetoggle.event.LeftEyeOpenEvent;
 import com.aitorvs.android.eyetoggle.event.RightEyeClosedEvent;
-import com.aitorvs.android.eyetoggle.event.RightEyeOpenEvent;
 import com.aitorvs.android.eyetoggle.tracker.FaceTrackerFactory;
 import com.aitorvs.android.eyetoggle.util.PlayServicesUtil;
 import com.google.android.gms.vision.CameraSource;
@@ -158,10 +156,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Subscribe
-    public void onLeftEyeOpen(LeftEyeOpenEvent e) {
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLeftEyeClosed(LeftEyeClosedEvent e) {
         if (mSwitch.isChecked() && catchUpdatingLock()) {
@@ -169,10 +163,6 @@ public class MainActivity extends AppCompatActivity {
             mLight.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
             releaseUpdatingLock();
         }
-    }
-
-    @Subscribe
-    public void onRightEyeOpen(RightEyeOpenEvent e) {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
