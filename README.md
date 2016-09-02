@@ -1,8 +1,10 @@
 # Face Tracker Playground
-A sample project showing the Vision API and in particular the face tracking capabilities 
+A sample project showing the Vision API and in particular the face tracking capabilities.
 
-- Check the post in [Medium]().
-- Download the sample app from the [PlayStore]() beta channel.
+- Check the post in [Medium](https://medium.com/@aitorvs/android-face-tracking-playground-62e1c44a698a#.edwq7258k).
+- Download the sample app from the [PlayStore beta channel](https://play.google.com/apps/testing/com.aitorvs.android.eyetoggle).
+
+Install the app and just wink right and/or left eye in front of the (front) camera to see the results.
 
 # License
 ```
