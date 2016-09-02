@@ -24,7 +24,7 @@ import com.google.android.gms.vision.face.Face;
 
 import org.greenrobot.eventbus.EventBus;
 
-class FaceTracker extends Tracker<Face> {
+public class FaceTracker extends Tracker<Face> {
 
     private static final float PROB_THRESHOLD = 0.7f;
     private static final String TAG = FaceTracker.class.getSimpleName();

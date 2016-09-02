@@ -16,11 +16,11 @@ import android.view.View;
 
 import com.aitorvs.android.eyetoggle.event.LeftEyeClosedEvent;
 import com.aitorvs.android.eyetoggle.event.RightEyeClosedEvent;
-import com.aitorvs.android.eyetoggle.tracker.FaceTrackerFactory;
+import com.aitorvs.android.eyetoggle.tracker.FaceTracker;
 import com.aitorvs.android.eyetoggle.util.PlayServicesUtil;
 import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.face.FaceDetector;
+import com.google.android.gms.vision.face.LargestFaceFocusingProcessor;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
         // now that we've got a detector, create a processor pipeline to receive the detection
         // results
-        mFaceDetector.setProcessor(new MultiProcessor.Builder<>(new FaceTrackerFactory()).build());
+        mFaceDetector.setProcessor(new LargestFaceFocusingProcessor(mFaceDetector, new FaceTracker()));
 
         // operational...?
         if (!mFaceDetector.isOperational()) {
