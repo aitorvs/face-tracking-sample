@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
         // create and setup the face detector
         mFaceDetector = new FaceDetector.Builder(context)
+                .setProminentFaceOnly(true) // optimize for single, relatively large face
                 .setTrackingEnabled(true) // enable face tracking
                 .setClassificationType(/* eyes open and smile */ FaceDetector.ALL_CLASSIFICATIONS)
                 .setMode(FaceDetector.FAST_MODE) // for one face this is OK
