@@ -17,6 +17,7 @@ package com.aitorvs.android.eyetoggle.tracker;
  */
 
 import com.aitorvs.android.eyetoggle.event.LeftEyeClosedEvent;
+import com.aitorvs.android.eyetoggle.event.NeutralFaceEvent;
 import com.aitorvs.android.eyetoggle.event.RightEyeClosedEvent;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Tracker;
@@ -48,6 +49,8 @@ public class FaceTracker extends Tracker<Face> {
             EventBus.getDefault().post(new LeftEyeClosedEvent());
         } else if (rightClosed && !leftClosed) {
             EventBus.getDefault().post(new RightEyeClosedEvent());
+        } else if (!leftClosed && !rightClosed) {
+            EventBus.getDefault().post(new NeutralFaceEvent());
         }
     }
 }

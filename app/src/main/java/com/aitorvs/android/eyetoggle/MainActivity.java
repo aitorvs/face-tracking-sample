@@ -13,8 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.aitorvs.android.eyetoggle.event.LeftEyeClosedEvent;
+import com.aitorvs.android.eyetoggle.event.NeutralFaceEvent;
 import com.aitorvs.android.eyetoggle.event.RightEyeClosedEvent;
 import com.aitorvs.android.eyetoggle.tracker.FaceTracker;
 import com.aitorvs.android.eyetoggle.util.PlayServicesUtil;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private FaceDetector mFaceDetector;
     private CameraSource mCameraSource;
     private final AtomicBoolean updating = new AtomicBoolean(false);
+    private TextView mEmoticon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         mSwitch = (SwitchCompat) findViewById(R.id.switchButton);
         mLight = findViewById(R.id.light);
+        mEmoticon = (TextView) findViewById(R.id.emoticon);
 
         // check that the play services are installed
         PlayServicesUtil.isPlayServicesAvailable(this, 69);
@@ -158,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLeftEyeClosed(LeftEyeClosedEvent e) {
+        setEmoji(R.string.emoji_winking);
         if (mSwitch.isChecked() && catchUpdatingLock()) {
             mSwitch.setChecked(false);
             mLight.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
@@ -167,9 +172,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRightEyeClosed(RightEyeClosedEvent e) {
+        setEmoji(R.string.emoji_winking);
         if (!mSwitch.isChecked() && catchUpdatingLock()) {
             mSwitch.setChecked(true);
             mLight.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+            releaseUpdatingLock();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNeutralFace(NeutralFaceEvent e) {
+        setEmoji(R.string.emoji_neutral);
+    }
+
+    private void setEmoji(int resource) {
+        if (!mEmoticon.getText().equals(getString(resource)) && catchUpdatingLock()) {
+            mEmoticon.setText(resource);
             releaseUpdatingLock();
         }
     }
