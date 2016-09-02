@@ -1,8 +1,8 @@
 # Face Tracker Playground
 A sample project showing the Vision API and in particular the face tracking capabilities 
 
-- Check the post in [Medium]()
-- Download the sample app from the [PlayStore]()
+- Check the post in [Medium]().
+- Download the sample app from the [PlayStore]() beta channel.
 
 # License
 ```
